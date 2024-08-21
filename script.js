@@ -217,7 +217,7 @@ function saveReturnBook(titre,categorie,auteur,jour,mois,annee){
     }
 }
     
-saveReturnBook("Strategie UX","science","ramadane",4,5,2024)
+//saveReturnBook("Strategie UX","science","ramadane",4,5,2024)
 console.log(retours)
 
 console.log(books)
@@ -262,24 +262,28 @@ verifierDispoLivre("Strategie ")
 
 // 4- Gestion des reservations
 const reservations = []
-// Permettre aux membres de reserver des livres disponibles
+// Permettre aux membres de reserver des livres indisponibles
 function reservation(titre, idMembre){
     const findBook=books.find(item=>item.titre===titre)
     const findMember=members.find(item=>item.numberOfMembers===idMembre)
+    const findEmprunt= emprunts.find(item=>item.bookTitle===titre)
 
-    if (findBook && findMember){
+    if(findBook && !findEmprunt && findMember){
+        console.log('Pas besoin de reserver, le livre est disponible')
+    }else if((!findBook || !findMember) && !findEmprunt){
+        console.log('Reservation impossible ')
+    }
+    else {
         const reservation = {
             titre,
             idMembre
         }
         reservations.push(reservation)
         console.log(`Le livre ${titre} a été bien reservé pour le membre ${idMembre}`)
-    }else{
-        console.log("Réservation impossible.");
     }
 }
 
-reservation('offre', 3)
+reservation('Strategie UX', 3)
 console.log(reservations)
 
 // Gestion d'une liste d'attente pour les membres
